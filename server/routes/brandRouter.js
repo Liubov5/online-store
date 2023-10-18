@@ -1,8 +1,9 @@
 const Router = require('express');
 const router = new Router();
+const BrandController = require("../controllers/brandController")
 
-router.post("/"); //добавлять бренды
-router.get("/") //получать бренды
+router.post("/", BrandController.create); //добавлять бренды
+router.get("/", BrandController.getAll) //получать бренды
 
 
 module.exports = router;
