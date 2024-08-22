@@ -6,11 +6,11 @@ import Shop from '../pages/Shop';
 import { useSelector } from 'react-redux';
 
 const AppRoutes = () => {
-    const currentUser = useSelector((state)=>state.user.currentUser);
+    const isAuth = useSelector((state)=>state.user.isAuth);
     
     return (
         <Routes>
-            {currentUser && authRoutes.map(({path, element})=>
+            {isAuth && authRoutes.map(({path, element})=>
                 <Route key={path} path={path} element={element} exact/>
             )}
             {publicRoutes.map(({path, element})=>

@@ -8,10 +8,10 @@ import { DEVICE_ROUTE } from '../utils/consts';
 
 const DeviceItem = ({id,name,price, img, rating}) => {
     const navigate = useNavigate();
-    console.log(navigate)
+    
     return (
         <Col md='3' className='mt-3'>
-            <Link to={`${DEVICE_ROUTE}/${id}`}>
+            <Link style={{textDecoration:'none'}} to={`${DEVICE_ROUTE}/${id}`}>
                 <Card style={{width:150, cursor:'pointer'}} border={"dark"}>
                     <Image width={150} height={150} src={img}/>
                     <div className='text-black-50 mt-2 d-flex justify-content-between align-items-center'>
