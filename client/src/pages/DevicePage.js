@@ -1,32 +1,31 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Container from 'react-bootstrap/esm/Container'
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import BigStar from "../images/BigStar.png";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import { useParams } from 'react-router-dom';
+import { fetchOneDevice } from '../store/deviceSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const DevicePage = () => {
-  const device =  {
-      id:6,
-      name:"Iphone 11",
-      price: "600",
-      img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-      rating:5
-    }
+  const [device, setDevice] = useState({info:[]});
+  const {id} = useParams();
+  const dispatch = useDispatch();
+  //const device = useSelector(({device})=>device.selectedDevice);
+  useEffect(()=>{
+    dispatch(fetchOneDevice(id)).then(({payload})=>{
+      setDevice(payload)
+    })
+    
+  }, [])
 
-    const description = [
-      {id:1, title:"Оперативная память",description:'5 гб'},
-      {id:2, title:"Камера",description:'12 мп'},
-      {id:3, title:"Процессор",description:'Пентиум 3'},
-      {id:4, title:"Кол-во ядер",description:'2'},
-      {id:5, title:"Аккумулятор",description:'4000'},
-    ]
   return (
     <Container className='mt-5'>
       <div className='d-flex'>
         <Col md={4}>
-          <Image width={300} height={300} src={device.img}/>
+          <Image width={300} height={300} src={process.env.REACT_APP_API_URL + "/"+device.img}/>
         </Col>
         <Col md={4}>
           <div className='d-flex flex-column align-items-center'>
@@ -46,11 +45,11 @@ const DevicePage = () => {
       <div className='d-flex flex-column m-4'>
         <h1>Характеристики</h1>
         {
-          description.map((info, index)=>(
-            <div style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding:10,}} className='d-flex' key={info.id}>
-              {info.title} : {info.description}
-            </div>
-          ))
+          // device.info.map((info, index)=>(
+          //   <div style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding:10,}} className='d-flex' key={info.id}>
+          //     {info.title} : {info.description}
+          //   </div>
+          // ))
         }
       </div>
     </Container>

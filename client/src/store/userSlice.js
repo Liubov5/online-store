@@ -26,15 +26,20 @@ export const login = createAsyncThunk('users/login', async({email,password}, thu
     }
 })
 
-export const check = createAsyncThunk('users/check', async()=>{
-    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/user/auth`, {
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
-    })
-    localStorage.setItem('token', data.token);
-    return jwtDecode(data.token);
-    
+export const check = createAsyncThunk('users/check', async(payload, thunkAPI)=>{
+    try{
+        const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/user/auth`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+        })
+        console.log(data)
+        localStorage.setItem('token', data.token);
+        return jwtDecode(data.token);
+    }catch(err){
+        console.log(err.response.data.message);
+        return thunkAPI.rejectWithValue(err);
+    }
 });
 
 
@@ -62,6 +67,11 @@ export const userSlice = createSlice({
         })
         builder.addCase(check.fulfilled, (state, {payload})=>{
             state.currentUser = payload;
+            state.isAuth = true;
+        })
+        builder.addCase(check.rejected, (state, action)=>{
+           state.currentUser = null;
+           state.isAuth = false;
         })
     }
 })

@@ -1,112 +1,60 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const createType = createAsyncThunk("device/createType", async(type)=>{
+    const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/type`, type, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    return data;
+});
+
+export const fetchTypes = createAsyncThunk("device/fetchTypes", async()=>{
+    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/type`);
+    return data;
+})
+
+export const createBrand = createAsyncThunk("device/createBrand", async(brand)=>{
+    const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/brand`, brand, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    return data;
+});
+
+export const fetchBrands = createAsyncThunk("device/fetchBrands", async()=>{
+    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/brand`);
+    return data;
+})
+
+export const createDevice = createAsyncThunk("device/createDevice", async(device)=>{
+    const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/device`, device, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    return data;
+});
+
+export const fetchDevices = createAsyncThunk("device/fetchDevices", async()=>{
+    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device`);
+    return data;
+})
+
+export const fetchOneDevice = createAsyncThunk("device/fetchOneDevice", async(id)=>{
+    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device/${id}`);
+    return data;
+})
 
 export const deviceSlice = createSlice({
     name:"device",
     initialState:{
-        types:[{
-            id:1,
-            title:"Холодильники"
-        }, 
-        {
-            id:2,
-            title:"Электроника"
-        },
-        {
-            id:3,
-            title:"Кухонное оборудование"
-        },
-        {
-            id:4,
-            title:"Смартфоны"
-        },
-        {
-            id:5,
-            title:"Ноутбуки"
-        }
-        ],
-        brands:[
-            {
-                id:1,
-                name:"Iphone"
-            },
-            {
-                id:2,
-                name:"Samsung"
-            },
-            {
-                id:3,
-                name:"Lenovo"
-            },
-            {
-                id:4,
-                name:"Asus"
-            },
-        ],
-        devices:[
-            {
-                id:1,
-                name:"Iphone 15",
-                price: "1000$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:2,
-                name:"Iphone 14",
-                price: "900$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:3,
-                name:"Iphone 13",
-                price: "800$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:4,
-                name:"Iphone 12",
-                price: "700$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:5,
-                name:"Iphone 11",
-                price: "600$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:6,
-                name:"Iphone 11",
-                price: "600$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:7,
-                name:"Iphone 11",
-                price: "600$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:8,
-                name:"Iphone 11",
-                price: "600$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-            {
-                id:9,
-                name:"Iphone 11",
-                price: "600$",
-                img:"https://economictimes.indiatimes.com/thumb/msid-95136602,width-1200,height-900,resizemode-4,imgsize-18404/iphone-15-pro.jpg?from=mdr",
-                rating:5
-            },
-        ],
+        types:[],
+        brands:[],
+        devices:[],
+        selectedDevice:null,
         selectedType:null,
         selectedBrand:null,
     },
@@ -117,6 +65,26 @@ export const deviceSlice = createSlice({
         setSelectedBrand:(state, {payload})=>{
             state.selectedBrand = payload;
         }
+    },
+    extraReducers:(builder)=>{
+        builder.addCase(fetchTypes.fulfilled, (state, {payload})=>{
+            state.types = payload;
+        })
+        builder.addCase(fetchBrands.fulfilled, (state, {payload})=>{
+            state.brands = payload;
+        })
+        builder.addCase(fetchDevices.fulfilled, (state, {payload})=>{
+            state.devices = payload.rows;
+        })
+        builder.addCase(createType.fulfilled, (state, {payload})=>{
+            state.types.push(payload)
+        })
+        builder.addCase(createBrand.fulfilled, (state, {payload})=>{
+            state.brands.push(payload);
+        })
+        // builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
+        //    state.selectedDevice = payload;
+        // }) //не работает т.е. работает но бессмысленная получается
     }
 })
 

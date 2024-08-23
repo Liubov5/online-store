@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
+import { createType } from '../../store/deviceSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const CreateType = ({show, onHide}) => {
+    const [value, setValue] = useState('');
+    const dispatch = useDispatch();
+
+    const addType = () => {
+        dispatch(createType({name:value})).then(()=>setValue(''));
+        onHide();
+    }
   return (
     <Modal
         show={show}
@@ -18,12 +27,12 @@ const CreateType = ({show, onHide}) => {
         </Modal.Header>
         <Modal.Body>
             <Form>
-                <Form.Control placeholder='Введите название типа'></Form.Control>
+                <Form.Control onChange={(e)=>setValue(e.target.value)} value={value} placeholder='Введите название типа'></Form.Control>
             </Form>
         </Modal.Body>
         <Modal.Footer>
             <Button variant='outline-danger'  onClick={onHide}>Закрыть</Button>
-            <Button variant='outline-success'  onClick={onHide}>Добавить</Button>
+            <Button variant='outline-success'  onClick={addType}>Добавить</Button>
         </Modal.Footer>
     </Modal>
   )
