@@ -4,26 +4,36 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
-import { NavLink, useLocation } from 'react-router-dom';
-import { LOGIN_ROUTE, REGISTRATION_ROUTE } from '../utils/consts';
-import { useDispatch } from 'react-redux';
-import { registration } from '../store/userSlice';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from '../utils/consts';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, registration, setIsAuth } from '../store/userSlice';
 
 const Auth = () => {
   const location = useLocation();
   const isLogin = location.pathname === LOGIN_ROUTE;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const {user} = useSelector(({user})=>user);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
 
   const click = async () => {
-    if(isLogin) {
-      console.log("login")
-    }else {
-      const response = dispatch(registration({email, password}));
-      console.log(response);
+    try{
+      let data;
+      if(isLogin) {
+        data = dispatch(login({email, password}));
+      }else {
+        data = dispatch(registration({email, password}));
+      }
+      dispatch(setIsAuth(true));
+      navigate(SHOP_ROUTE);
+    }catch(err){
+      alert(err.response.data.message)
     }
+    
   }
 
   return (

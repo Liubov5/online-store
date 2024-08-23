@@ -6,12 +6,18 @@ import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { ADMIN_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../utils/consts';
 import Button from 'react-bootstrap/Button';
-import { setIsAuth } from '../store/userSlice';
+import { setIsAuth, setLogout } from '../store/userSlice';
 
 const Header = () => {
   const {currentUser, isAuth} =   useSelector(({user})=>user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const logout = () => {
+    dispatch(setLogout());
+    localStorage.removeItem('token')
+  }
+
   return (
     <Navbar bg="dark" data-bs-theme="dark">
         <Container>
@@ -19,11 +25,11 @@ const Header = () => {
         {isAuth ? 
             <Nav className="ml-auto" style={{color:'white'}}>
                 <Button variant="outline-light" onClick={()=>navigate(ADMIN_ROUTE)}>Админ-панель</Button>
-                <Button variant="outline-light" className='mx-2' onClick={()=>navigate(LOGIN_ROUTE)}>Выйти</Button>
+                <Button variant="outline-light" className='mx-2' onClick={()=>logout()}>Выйти</Button>
             </Nav>
             :
             <Nav className="ml-auto" style={{color:'white'}}>
-                <Button variant="outline-light" onClick={()=>dispatch(setIsAuth(true))}>Авторизация</Button>
+                <Button variant="outline-light" onClick={()=>navigate(LOGIN_ROUTE)}>Авторизация</Button>
             </Nav>
         }
         </Container>
