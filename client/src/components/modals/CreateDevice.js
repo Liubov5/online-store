@@ -8,6 +8,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 const CreateDevice = ({show, onHide}) => {
   const device = useSelector(({device})=>device);
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState(0);
+  const [file, setFile] = useState(null);
+  const [type, setType] = useState(null);
+  const [brand, setBrand] = useState(null);
   const [info, setInfo] = useState([]);
   const addInfo = () => {
     setInfo([...info, {title:'', description:'',number:Date.now()}])
