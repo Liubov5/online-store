@@ -33,7 +33,6 @@ export const check = createAsyncThunk('users/check', async(payload, thunkAPI)=>{
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-        console.log(data)
         localStorage.setItem('token', data.token);
         return jwtDecode(data.token);
     }catch(err){

@@ -13,7 +13,6 @@ const DevicePage = () => {
   const [device, setDevice] = useState({info:[]});
   const {id} = useParams();
   const dispatch = useDispatch();
-  //const device = useSelector(({device})=>device.selectedDevice);
   useEffect(()=>{
     dispatch(fetchOneDevice(id)).then(({payload})=>{
       setDevice(payload)
@@ -45,11 +44,11 @@ const DevicePage = () => {
       <div className='d-flex flex-column m-4'>
         <h1>Характеристики</h1>
         {
-          // device.info.map((info, index)=>(
-          //   <div style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding:10,}} className='d-flex' key={info.id}>
-          //     {info.title} : {info.description}
-          //   </div>
-          // ))
+          device.info.map((info, index)=>(
+            <div style={{background: index % 2 === 0 ? 'lightgray' : 'transparent', padding:10,}} className='d-flex' key={info.id}>
+              {info.title} : {info.description}
+            </div>
+          ))
         }
       </div>
     </Container>

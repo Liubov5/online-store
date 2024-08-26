@@ -38,8 +38,14 @@ export const createDevice = createAsyncThunk("device/createDevice", async(device
     return data;
 });
 
-export const fetchDevices = createAsyncThunk("device/fetchDevices", async()=>{
-    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device`);
+export const fetchDevices = createAsyncThunk("device/fetchDevices", async({typeId,brandId,page,limit}, thunkAPI) => {
+    const params = {
+        typeId:typeId,
+        brandId:brandId,
+        page:page,
+        limit:limit
+    }
+    const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device`, {params:params});
     return data;
 })
 
@@ -54,17 +60,30 @@ export const deviceSlice = createSlice({
         types:[],
         brands:[],
         devices:[],
-        selectedDevice:null,
-        selectedType:null,
-        selectedBrand:null,
+        selectedDevice:{},
+        selectedType:{},
+        selectedBrand:{},
+        page:1,
+        totalCount:0,
+        limit:3,
     },
     reducers:{
         setSelectedType:(state, {payload})=>{
+            console.log(payload)
             state.selectedType = payload;
         },
         setSelectedBrand:(state, {payload})=>{
             state.selectedBrand = payload;
-        }
+        },
+        setPage:(state, {payload})=>{
+            state.page = payload
+        },
+        setTotalCount:(state, {payload})=>{
+            state.totalCount = payload
+        },
+        setLimit:(state, {payload})=>{
+            state.limit = payload
+        },
     },
     extraReducers:(builder)=>{
         builder.addCase(fetchTypes.fulfilled, (state, {payload})=>{
@@ -75,6 +94,7 @@ export const deviceSlice = createSlice({
         })
         builder.addCase(fetchDevices.fulfilled, (state, {payload})=>{
             state.devices = payload.rows;
+            
         })
         builder.addCase(createType.fulfilled, (state, {payload})=>{
             state.types.push(payload)
@@ -82,12 +102,15 @@ export const deviceSlice = createSlice({
         builder.addCase(createBrand.fulfilled, (state, {payload})=>{
             state.brands.push(payload);
         })
+        builder.addCase(createDevice.fulfilled, (state, {payload})=>{
+            state.devices.push(payload);
+        })  
         // builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
         //    state.selectedDevice = payload;
         // }) //не работает т.е. работает но бессмысленная получается
     }
 })
 
-export const {setSelectedType, setSelectedBrand} = deviceSlice.actions;
+export const {setSelectedType, setSelectedBrand, setPage, setTotalCount, setLimit} = deviceSlice.actions;
 
 export default deviceSlice.reducer;

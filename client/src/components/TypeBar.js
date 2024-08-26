@@ -10,13 +10,13 @@ const TypeBar = () => {
 
   return (
     <ListGroup>
-        {device.types.map(({id,name})=>(
+        {device.types.map((type)=>(
             <ListGroup.Item
                 style={{cursor:'pointer'}}
-                active={id === device.selectedType}
-                key={id} 
-                onClick={()=>dispatch(setSelectedType(id))}>
-                {name}
+                active={type.id === device.selectedType.id ? true : false}
+                key={type.id} 
+                onClick={()=>dispatch(setSelectedType(type))}>
+                {type.name}
             </ListGroup.Item>
         ))}
     </ListGroup>

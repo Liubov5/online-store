@@ -6,14 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { check, setIsAuth } from "./store/userSlice";
 import Spinner from 'react-bootstrap/Spinner';
-import { fetchBrands, fetchDevices, fetchTypes } from "./store/deviceSlice";
+import { fetchBrands, fetchDevices, fetchTypes, setSelectedBrand, setSelectedType, setTotalCount } from "./store/deviceSlice";
 
 
 function App() {
-  const {user} = useSelector(({user})=>user);
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-  
+  const device = useSelector(({device})=>device);
+
+
   useEffect(()=>{
   //  setTimeout(()=>{dispatch(check()).then(dispatch(setIsAuth(true))).finally(()=>setLoading(false))} , 1000)
     setTimeout(()=>{dispatch(check()).then(()=>setLoading(false))} , 1000)
@@ -25,10 +26,13 @@ function App() {
 
   useEffect(()=>{
     dispatch(fetchBrands());
-    dispatch(fetchDevices());
     dispatch(fetchTypes());
+    dispatch(fetchDevices({typeId:null, brandId:null, page:2,limit:2})).then(({payload})=>{
+      dispatch(setTotalCount(payload.count))
+    });
+    
+  },[dispatch]); 
 
-  },[]);
 
   if(loading) {
     return <Spinner animation="grow"/>

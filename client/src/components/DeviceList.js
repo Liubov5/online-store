@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import DeviceItem from './DeviceItem';
 
 const DeviceList = () => {
     const device =  useSelector(({device})=>device);
-    const dispatch = useDispatch();
 
     return (
         <div className='d-flex flex-wrap'>

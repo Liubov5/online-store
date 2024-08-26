@@ -9,14 +9,20 @@ import TypeBar from '../components/TypeBar';
 import BrandBar from '../components/BrandBar';
 import DeviceList from '../components/DeviceList';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchTypes } from '../store/deviceSlice';
+import { fetchDevices, fetchTypes, setTotalCount } from '../store/deviceSlice';
+import Pages from '../components/Pages';
 
 const Shop = () => {
-  const {device} = useSelector(({device})=>device);
-
   const dispatch = useDispatch();
+  const device = useSelector(({device})=>device);
 
-  
+  useEffect(()=>{
+    dispatch(fetchDevices({typeId:device.selectedType.id, brandId:device.selectedBrand.id, page:device.page, limit:2})).then(({payload})=>{
+      dispatch(setTotalCount(payload.count))
+    })
+  },[device.page, device.selectedType, device.selectedBrand]);
+
+
 
   return (
     <Container>
@@ -27,6 +33,7 @@ const Shop = () => {
         <Col md={9}>
           <BrandBar/>
           <DeviceList/>
+          <Pages/>
         </Col>
       </Row>
     </Container>
