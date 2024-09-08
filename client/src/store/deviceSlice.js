@@ -46,6 +46,7 @@ export const fetchDevices = createAsyncThunk("device/fetchDevices", async({typeI
         limit:limit
     }
     const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device`, {params:params});
+    console.log(data)
     return data;
 })
 
@@ -65,15 +66,16 @@ export const deviceSlice = createSlice({
         selectedBrand:{},
         page:1,
         totalCount:0,
-        limit:3,
+        limit:5,
     },
     reducers:{
         setSelectedType:(state, {payload})=>{
-            console.log(payload)
             state.selectedType = payload;
+            state.page = 1;
         },
         setSelectedBrand:(state, {payload})=>{
             state.selectedBrand = payload;
+            
         },
         setPage:(state, {payload})=>{
             state.page = payload
@@ -94,7 +96,6 @@ export const deviceSlice = createSlice({
         })
         builder.addCase(fetchDevices.fulfilled, (state, {payload})=>{
             state.devices = payload.rows;
-            
         })
         builder.addCase(createType.fulfilled, (state, {payload})=>{
             state.types.push(payload)
@@ -104,6 +105,9 @@ export const deviceSlice = createSlice({
         })
         builder.addCase(createDevice.fulfilled, (state, {payload})=>{
             state.devices.push(payload);
+            setSelectedBrand({});
+            setSelectedType({});
+            //не работает эта штука все равно после добавления нового устройства выбраны тип и бренд по которому добавляли новое устройство. но это надо обнулять при переходе на главную страниу
         })  
         // builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
         //    state.selectedDevice = payload;

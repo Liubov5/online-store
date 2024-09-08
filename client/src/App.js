@@ -27,7 +27,7 @@ function App() {
   useEffect(()=>{
     dispatch(fetchBrands());
     dispatch(fetchTypes());
-    dispatch(fetchDevices({typeId:null, brandId:null, page:2,limit:2})).then(({payload})=>{
+    dispatch(fetchDevices({typeId:null, brandId:null, page:1,limit:5})).then(({payload})=>{
       dispatch(setTotalCount(payload.count))
     });
     
@@ -42,7 +42,7 @@ function App() {
       <div>
         <Header/>
         <AppRoutes/>
-        <Footer/>
+        {/* <Footer/> */}
       </div>
     
   );

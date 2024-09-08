@@ -15,9 +15,9 @@ import Pages from '../components/Pages';
 const Shop = () => {
   const dispatch = useDispatch();
   const device = useSelector(({device})=>device);
-
+  
   useEffect(()=>{
-    dispatch(fetchDevices({typeId:device.selectedType.id, brandId:device.selectedBrand.id, page:device.page, limit:2})).then(({payload})=>{
+    dispatch(fetchDevices({typeId:device.selectedType.id, brandId:device.selectedBrand.id, page:device.page, limit:5})).then(({payload})=>{
       dispatch(setTotalCount(payload.count))
     })
   },[device.page, device.selectedType, device.selectedBrand]);
