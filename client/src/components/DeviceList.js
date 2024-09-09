@@ -7,16 +7,18 @@ import { deleteDevice } from '../store/deviceSlice';
 const DeviceList = ({from}) => {
     const device =  useSelector(({device})=>device);
     const dispatch = useDispatch()
-    if(from){
-        console.log(from)
+    const handleClick = (id) => {
+        const result = window.confirm("Хотите удалить?");
+        if(result){
+            dispatch(deleteDevice(id));
+        }
     }
-
     return (
         <div className='d-flex flex-wrap justify-content-around'>
             {device.devices.map((device)=>(
                 <div key={device.id}>
                     <DeviceItem  {...device}/>
-                    {from ? <Button onClick={()=>dispatch(deleteDevice(device.id))} className='mt-3'>Удалить</Button> : '' }
+                    {from ? <Button onClick={()=>handleClick(device.id)} className='mt-3'>Удалить</Button> : '' }
                 </div>
             ))}
         </div>

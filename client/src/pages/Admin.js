@@ -20,7 +20,7 @@ const Admin = () => {
     dispatch(fetchDevices({typeId:null, brandId:null, page:device.page, limit:5})).then(({payload})=>{
       dispatch(setTotalCount(payload.count))
     })
-  },[device.page, device.selectedType, device.selectedBrand]);
+  },[dispatch, device]);
 
   return (
     <Container className='d-flex flex-column'>
