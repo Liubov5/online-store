@@ -46,7 +46,6 @@ export const fetchDevices = createAsyncThunk("device/fetchDevices", async({typeI
         limit:limit
     }
     const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device`, {params:params});
-    console.log(data)
     return data;
 })
 
@@ -54,6 +53,15 @@ export const fetchOneDevice = createAsyncThunk("device/fetchOneDevice", async(id
     const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device/${id}`);
     return data;
 })
+
+export const deleteDevice = createAsyncThunk("device/deleteDevice", async(id)=>{
+    const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/device/delete/${id}`, {
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+        }
+    });
+    return data;
+});
 
 export const deviceSlice = createSlice({
     name:"device",
@@ -105,10 +113,13 @@ export const deviceSlice = createSlice({
         })
         builder.addCase(createDevice.fulfilled, (state, {payload})=>{
             state.devices.push(payload);
-            setSelectedBrand({});
-            setSelectedType({});
+            state.selectedBrand = {};
+            state.selectedType = {};
             //не работает эта штука все равно после добавления нового устройства выбраны тип и бренд по которому добавляли новое устройство. но это надо обнулять при переходе на главную страниу
         })  
+        builder.addCase(deleteDevice.fulfilled, (state, {payload})=>{
+            console.log(payload);
+        })
         // builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
         //    state.selectedDevice = payload;
         // }) //не работает т.е. работает но бессмысленная получается

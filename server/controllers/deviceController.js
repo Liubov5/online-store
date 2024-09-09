@@ -67,7 +67,11 @@ class DeviceController {
 
     async deleteOne(req, res){
         const {id} = req.params;
-        //const device = await Device.de
+        const device = await Device.destroy({
+            where:{id},
+            include: [{model: DeviceInfo, as: 'info'}]
+        })
+        return res.json(device);
     }
 
 }

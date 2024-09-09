@@ -17,14 +17,15 @@ const DevicePage = () => {
     dispatch(fetchOneDevice(id)).then(({payload})=>{
       setDevice(payload)
     })
-    
   }, [])
-
+  const devices = useSelector(({device})=>device);
   return (
     <Container className='mt-5'>
       <div className='d-flex'>
         <Col md={4}>
           <Image width={300} height={300} src={process.env.REACT_APP_API_URL + "/"+device.img}/>
+          <h4>Фирма: { devices.brands.map( (brand) => brand.id === device.brandId ? brand.name : '') }</h4>
+          <h4>Категория: { devices.types.map( (type) => type.id === device.typeId ? type.name : '') }</h4>
         </Col>
         <Col md={4}>
           <div className='d-flex flex-column align-items-center'>

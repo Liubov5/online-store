@@ -16,11 +16,11 @@ const Admin = () => {
   const dispatch = useDispatch();
   const device = useSelector(({device})=>device);
   
-  // useEffect(()=>{
-  //   dispatch(fetchDevices({typeId:device.selectedType.id, brandId:device.selectedBrand.id, page:device.page, limit:4})).then(({payload})=>{
-  //     dispatch(setTotalCount(payload.count))
-  //   })
-  // },[device.page, device.selectedType, device.selectedBrand]);
+  useEffect(()=>{
+    dispatch(fetchDevices({typeId:null, brandId:null, page:device.page, limit:5})).then(({payload})=>{
+      dispatch(setTotalCount(payload.count))
+    })
+  },[device.page, device.selectedType, device.selectedBrand]);
 
   return (
     <Container className='d-flex flex-column'>
@@ -30,7 +30,7 @@ const Admin = () => {
       <CreateType show={typeVisible} onHide={()=>setTypeVisible(false)}/>
       <CreateBrand  show={brandVisible} onHide={()=>setBrandVisible(false)}/>
       <CreateDevice show={deviceVisible} onHide={()=>setDeviceVisible(false)}/>
-      <DeviceList/>
+      <DeviceList from="admin"/>
       <Pages/>
     </Container>
   )
