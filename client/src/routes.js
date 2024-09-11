@@ -4,8 +4,9 @@ import Basket from "./pages/Basket";
 import Shop from "./pages/Shop";
 import DevicePage from "./pages/DevicePage";
 
-import { ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, ROOT, SHOP_ROUTE } from "./utils/consts"
+import { ADMIN_ROUTE, BASKET_ROUTE, DEVICE_ROUTE, EDIT_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, ROOT, SHOP_ROUTE } from "./utils/consts"
 import App from "./App";
+import EditDevice from "./pages/EditDevice";
 
 
 export const authRoutes = [
@@ -17,6 +18,10 @@ export const authRoutes = [
         path: BASKET_ROUTE,
         element: <Basket/>
     },
+    {
+        path:EDIT_ROUTE,
+        element: <EditDevice/>
+    }
 
 ]
 

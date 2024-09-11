@@ -74,6 +74,10 @@ class DeviceController {
         return res.json(device);
     }
 
+    async updateOne(req, res){
+        
+    }
+
 }
 
 module.exports = new DeviceController();
