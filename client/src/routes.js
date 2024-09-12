@@ -21,7 +21,8 @@ export const authRoutes = [
     {
         path:EDIT_ROUTE,
         element: <EditDevice/>
-    }
+    },
+   
 
 ]
 

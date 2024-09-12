@@ -19,6 +19,7 @@ const DevicePage = () => {
     })
   }, [])
   const devices = useSelector(({device})=>device);
+  
   return (
     <Container className='mt-5'>
       <div className='d-flex'>

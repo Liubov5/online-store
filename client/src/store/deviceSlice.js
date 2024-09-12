@@ -52,7 +52,7 @@ export const fetchDevices = createAsyncThunk("device/fetchDevices", async({typeI
 export const fetchOneDevice = createAsyncThunk("device/fetchOneDevice", async(id)=>{
     const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device/${id}`);
     return data;
-})
+}) //такой способ подтяшивает за собой доп инфу
 
 export const deleteDevice = createAsyncThunk("device/deleteDevice", async(id)=>{
     const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/device/delete/${id}`, {
@@ -83,7 +83,6 @@ export const deviceSlice = createSlice({
         },
         setSelectedBrand:(state, {payload})=>{
             state.selectedBrand = payload;
-            
         },
         setPage:(state, {payload})=>{
             state.page = payload
@@ -115,17 +114,22 @@ export const deviceSlice = createSlice({
             state.devices.push(payload);
             state.selectedBrand = {};
             state.selectedType = {};
-            //не работает эта штука все равно после добавления нового устройства выбраны тип и бренд по которому добавляли новое устройство. но это надо обнулять при переходе на главную страниу
         })  
         builder.addCase(deleteDevice.fulfilled, (state, {payload})=>{
             console.log(payload);
         })
         // builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
         //    state.selectedDevice = payload;
-        // }) //не работает т.е. работает но бессмысленная получается
+        // }) получается бессмысленно немного, типо делаешь
     }
 })
 
 export const {setSelectedType, setSelectedBrand, setPage, setTotalCount, setLimit} = deviceSlice.actions;
 
 export default deviceSlice.reducer;
+
+export const selectDeviceById = (state, deviceId) => state.device.devices.find((device)=>device.id === Number(deviceId)); //это без допинфы, надо как -то подтянуть доп инфу теперь понятно почему нужен fetchOneDevice в state они хранятся без доп инфы
+
+
+//эта штука не работает почему?
+//чтобы получить один девайс не надо делать запрос на сервер, а обратиться к стору
