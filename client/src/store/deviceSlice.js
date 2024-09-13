@@ -52,7 +52,8 @@ export const fetchDevices = createAsyncThunk("device/fetchDevices", async({typeI
 export const fetchOneDevice = createAsyncThunk("device/fetchOneDevice", async(id)=>{
     const {data} = await axios.get(`${process.env.REACT_APP_API_URL}/api/device/${id}`);
     return data;
-}) //такой способ подтяшивает за собой доп инфу
+}) 
+//такой способ подтягивает за собой доп инфу
 
 export const deleteDevice = createAsyncThunk("device/deleteDevice", async(id)=>{
     const {data} = await axios.post(`${process.env.REACT_APP_API_URL}/api/device/delete/${id}`, {
@@ -118,9 +119,9 @@ export const deviceSlice = createSlice({
         builder.addCase(deleteDevice.fulfilled, (state, {payload})=>{
             console.log(payload);
         })
-        // builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
-        //    state.selectedDevice = payload;
-        // }) получается бессмысленно немного, типо делаешь
+        builder.addCase(fetchOneDevice.fulfilled, (state, {payload})=>{
+           state.selectedDevice = payload;
+        }) //получается бессмысленно немного, типо делаешь
     }
 })
 
@@ -128,8 +129,7 @@ export const {setSelectedType, setSelectedBrand, setPage, setTotalCount, setLimi
 
 export default deviceSlice.reducer;
 
-export const selectDeviceById = (state, deviceId) => state.device.devices.find((device)=>device.id === Number(deviceId)); //это без допинфы, надо как -то подтянуть доп инфу теперь понятно почему нужен fetchOneDevice в state они хранятся без доп инфы
+export const selectDeviceById = (state, deviceId) => state.device.devices.find((device)=>device.id === Number(deviceId)); 
 
+//это без допинфы, надо как -то подтянуть доп инфу теперь понятно почему нужен fetchOneDevice в state они хранятся без доп инфы
 
-//эта штука не работает почему?
-//чтобы получить один девайс не надо делать запрос на сервер, а обратиться к стору
