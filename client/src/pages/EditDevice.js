@@ -73,6 +73,7 @@ const EditDevice = () => {
           </Form.Group>
           
           <h5 className='mt-3'>Свойства товара: </h5>
+          <Button className='mt-3' onClick={()=>addNewInfo()}>Добавить свойство</Button>
           {
             info.map((i)=>(
               <div className='mt-3'>
@@ -90,8 +91,8 @@ const EditDevice = () => {
               </div>
             ))
           }
-          <Button className='mt-3' onClick={()=>addNewInfo()}>Добавить свойство</Button>
-          <br/>
+         
+        
           <Button onClick={changeDevice} className='mt-3 btn-success'>Сохранить изменения</Button>
         </Form>
       </div>
